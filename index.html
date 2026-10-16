@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hollow Crown — 3D Prototype</title>
+<link rel="modulepreload" href="./main.js">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.166.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.166.0/examples/jsm/"
+  }
+}
+</script>
+<style>
+  :root{--bg:#0b0c0e;--fg:#e8e8ea;--muted:#6b6f77;--cinder:#7cf5ff;--corrupt:#ff4d6d;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:var(--bg);color:var(--fg);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;overflow:hidden}
+  #canvas{position:absolute;inset:0;width:100%;height:100%;display:block;background:#050608}
+  #ui{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:24px;pointer-events:none;z-index:10}
+  #hud{display:flex;gap:16px;align-items:end;pointer-events:none}
+  #zone{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);opacity:0.7}
+  #corrupt-wrap{position:relative;width:160px;height:8px;border:1px solid var(--muted);background:#111;overflow:hidden}
+  #corrupt-fill{height:100%;width:0%;background:var(--corrupt);box-shadow:0 0 10px var(--corrupt)}
+  #corrupt-label{position:absolute;top:-16px;left:0;font-size:10px;color:var(--muted)}
+  #memories{font-size:11px;color:var(--cinder);margin-left:auto}
+  #dialogue{pointer-events:auto;max-width:420px}
+  #dialogue.visible{pointer-events:auto}
+  .dlg-backdrop{position:relative;width:100%;border:1px solid var(--muted);background:rgba(6,7,9,0.85);padding:14px 16px;box-shadow:0 0 24px rgba(0,0,0,0.6)}
+  .dlg-speaker{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--cinder);margin-bottom:6px}
+  .dlg-text{font-size:13px;line-height:1.55;color:var(--fg);margin-bottom:10px;min-height:3.2em}
+  .dlg-choices{display:flex;gap:8px;flex-wrap:wrap}
+  button.choice{background:transparent;border:1px solid var(--muted);color:var(--fg);font:inherit;font-size:11px;padding:6px 10px;cursor:pointer;text-align:left}
+  button.choice:hover{border-color:var(--cinder);color:var(--cinder)}
+  button.choice:disabled{opacity:0.4;cursor:not-allowed;border-color:#333}
+  #memory{pointer-events:none;font-size:12px;color:#cfcfd6;text-align:right;opacity:0;transition:opacity .4s}
+  #memory.show{opacity:1}
+  .hidden{display:none}
+  .glitch-1{animation:glitch-1 .15s infinite linear alternate-reverse}
+  .glitch-2{animation:glitch-2 .1s infinite linear alternate-reverse}
+  @keyframes glitch-1{0%,100%{transform:translate(0)}25%{transform:translate(-2px,1px)}75%{transform:translate(2px,-1px)}}
+  @keyframes glitch-2{0%,100%{transform:translate(0)}50%{transform:translate(3px,-1px)}}
+  .scanlines{background:linear-gradient(rgba(18,16,16,0) 50%,rgba(0,0,0,0.25) 50%),linear-gradient(90deg,rgba(255,0,0,0.03),rgba(0,255,0,0.01),rgba(0,0,255,0.03));background-size:100%4px,100%100%}
+  .chromatic{filter:contrast(1.06) saturate(1.1)}
+</style>
+</head>
+<body>
+<canvas id="canvas" class="three-canvas"></canvas>
+<div id="ui">
+  <div id="hud">
+    <div id="zone">Ashen Meridian</div>
+    <div id="corrupt-wrap"><div id="corrupt-fill"></div><div id="corrupt-label">CORRUPTION</div></div>
+    <div id="memories">MEMORIES <span id="mem-count">0</span>/3</div>
+  </div>
+  <div id="dialogue" class="hidden">
+    <div class="dlg-backdrop">
+      <div class="dlg-speaker" id="dlg-speaker">CINDER</div>
+      <div class="dlg-text" id="dlg-text"></div>
+      <div class="dlg-choices" id="dlg-choices"></div>
+    </div>
+  </div>
+  <div id="memory"></div>
+</div>
+<script type="module" src="./main.js"></script>
+</body>
+</html>
